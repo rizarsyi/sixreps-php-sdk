@@ -1,0 +1,12 @@
+# Sixreps PHP SDK
+
+The official PHP SDK for Sixreps public API.
+
+## TODO
+
+1. Testcase
+2. Example
+
+# Copyright
+
+SixReps 2011
