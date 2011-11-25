@@ -75,13 +75,13 @@ abstract class Sixreps_Api_Base {
 
 		mcrypt_generic_init($td, $key, $iv);
 		$response = mdecrypt_generic($td, $response);
-        mcrypt_generic_deinit($td);
-        mcrypt_module_close($td);
+		mcrypt_generic_deinit($td);
+		mcrypt_module_close($td);
 
-        // Remove all non-printable characters in response
-        $response = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $response);
+		// Remove all non-printable characters in response
+		$response = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $response);
 
-        // Response is still a string, make it object
+		// Response is still a string, make it object
 		return json_decode($response);
 	}
 

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Sixreps_Api_Oauth
+ */
 class Sixreps_Api_Oauth extends Sixreps_Api_Base {
 
 	public function prefix() {

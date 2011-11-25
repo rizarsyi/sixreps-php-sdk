@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Sixreps_Api_Album
+ */
 class Sixreps_Api_Album extends Sixreps_Api_Base {
 
 	public function prefix() {

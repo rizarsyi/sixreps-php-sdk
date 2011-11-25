@@ -7,17 +7,20 @@ if (!extension_loaded('mcrypt')) {
 
 // Throws exception if CURL extension is not loaded
 if (!function_exists('curl_init')) {
-  throw new RuntimeException('Sixreps needs the CURL PHP extension.');
+	throw new RuntimeException('Sixreps needs the CURL PHP extension.');
 }
 
 // Throws exception if JSON extension is not loaded
 if (!function_exists('json_decode')) {
-  throw new RuntimeException('Sixreps needs the JSON PHP extension.');
+	throw new RuntimeException('Sixreps needs the JSON PHP extension.');
 }
 
 // Tells PHP to auto-load classes using Sixreps_Client's autoloader.
 spl_autoload_register(array('Sixreps_Client', 'autoload'));
 
+/**
+ * Sixreps_Client
+ */
 class Sixreps_Client {
 
 	protected $clientId = null;
@@ -25,12 +28,17 @@ class Sixreps_Client {
 	protected $redirectUri = null;
 
 	/**
-	 * Full URL to domain that serves API resources
+	 * Domain that serves API resources
 	 *
 	 * @var string
 	 */
 	protected $host = 'http://api.sixreps.dev/';
 
+	/**
+	 * UserAgent name
+	 *
+	 * @var string
+	 */
 	protected $userAgent = 'sixreps-php-0.1';
 
 	protected $accessToken = null;
