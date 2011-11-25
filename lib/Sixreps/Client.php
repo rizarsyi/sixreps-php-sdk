@@ -80,6 +80,20 @@ class Sixreps_Client {
 		return $this->timeout;
 	}
 
+	public function redirectUri($redirectUri = null) {
+		if ($redirectUri) {
+			$this->redirectUri = $redirectUri;
+		}
+		return $this->redirectUri;
+	}
+
+	public function clientId($clientId = null) {
+		if ($clientId) {
+			$this->clientId = $clientId;
+		}
+		return $this->clientId;
+	}
+
 	public static function autoload($class) {
 		if (strpos($class, 'Sixreps') !== 0) {
 			return;

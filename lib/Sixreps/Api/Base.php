@@ -25,7 +25,7 @@ abstract class Sixreps_Api_Base {
 	 * @param array $attrs Array of parameters passed to URL
 	 * @return stdClass JSON-decoded string as an object
 	 */
-	protected function makeRequest($url, $attrs = array(), $withToken = true, $method = 'GET') {
+	protected function makeRequest($url, $attrs = array(), $withToken = true, $decrypt = true, $method = 'GET') {
 		$url = $this->client->host() . $url;
 
 		if ($withToken === true) {
@@ -38,7 +38,7 @@ abstract class Sixreps_Api_Base {
 		if (!empty($attrs)) {
 			$url .= '?';
 			foreach ($attrs as $param => $value) {
-				$url .= urlencode($param) . '=' .urlencode($value) . '&';
+				$url .= $param . '=' .$value . '&';
 			}
 		}
 
@@ -54,6 +54,9 @@ abstract class Sixreps_Api_Base {
 
 		curl_close($request);
 
+		if ($decrypt === false) {
+			return $response;
+		}
 		return $this->decryptResponse($response);
 	}
 
