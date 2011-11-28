@@ -19,7 +19,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->event->getEvent(1);
+		$this->assertEquals($result, $this->event->getEvent(1));
 	}
 
 }

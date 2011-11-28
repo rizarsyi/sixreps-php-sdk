@@ -19,7 +19,7 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->group->getGroup(1);
+		$this->assertEquals($result, $this->group->getGroup(1));
 	}
 
 }

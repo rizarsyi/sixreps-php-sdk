@@ -21,7 +21,7 @@ class PhotoTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->photo->getPhoto(1);
+		$this->assertEquals($result, $this->photo->getPhoto(1));
 	}
 
 	public function testGetComments() {
@@ -37,7 +37,7 @@ class PhotoTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->photo->getComments(1);
+		$this->assertEquals($result, $this->photo->getComments(1));
 	}
 
 	public function testGetLikes() {
@@ -51,7 +51,7 @@ class PhotoTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->photo->getLikes(1);
+		$this->assertEquals($result, $this->photo->getLikes(1));
 	}
 
 }

@@ -21,7 +21,7 @@ class VideoTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->video->getVideo(1);
+		$this->assertEquals($result, $this->video->getVideo(1));
 	}
 
 	public function testGetComments() {
@@ -37,7 +37,7 @@ class VideoTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->video->getComments(1);
+		$this->assertEquals($result, $this->video->getComments(1));
 	}
 
 	public function testGetLikes() {
@@ -51,7 +51,7 @@ class VideoTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->video->getLikes(1);
+		$this->assertEquals($result, $this->video->getLikes(1));
 	}
 
 }

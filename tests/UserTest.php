@@ -20,6 +20,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		           ->will($this->returnValue($result));
 
 		$this->user->getUser(1);
+		$this->assertEquals($result, $this->user->getUser(1));
 	}
 
 }

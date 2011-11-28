@@ -21,7 +21,7 @@ class BlogTest extends PHPUnit_Framework_TestCase {
 		           ->with(1)
 		           ->will($this->returnValue($result));
 
-		$this->blog->getBlog(1);
+		$this->assertEquals($result, $this->blog->getBlog(1));
 	}
 
 	public function testGetComments() {
@@ -37,7 +37,7 @@ class BlogTest extends PHPUnit_Framework_TestCase {
 		           ->with(1)
 		           ->will($this->returnValue($result));
 
-		$this->blog->getComments(1);
+		$this->assertEquals($result, $this->blog->getComments(1));
 	}
 
 	public function testGetLikes() {
@@ -51,7 +51,7 @@ class BlogTest extends PHPUnit_Framework_TestCase {
 		           ->with(1)
 		           ->will($this->returnValue($result));
 
-		$this->blog->getLikes(1);
+		$this->assertEquals($result, $this->blog->getLikes(1));
 	}
 
 }

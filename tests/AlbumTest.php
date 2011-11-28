@@ -21,7 +21,7 @@ class AlbumTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->album->getAlbum(1);
+		$this->assertEquals($result, $this->album->getAlbum(1));
 	}
 
 	public function testGetComments() {
@@ -37,7 +37,7 @@ class AlbumTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->album->getComments(1);
+		$this->assertEquals($result, $this->album->getComments(1));
 	}
 
 	public function testGetLikes() {
@@ -51,7 +51,7 @@ class AlbumTest extends PHPUnit_Framework_TestCase {
 		            ->with(1)
 		            ->will($this->returnValue($result));
 
-		$this->album->getLikes(1);
+		$this->assertEquals($result, $this->album->getLikes(1));
 	}
 
 }
