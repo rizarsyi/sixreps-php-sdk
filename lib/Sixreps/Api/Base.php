@@ -1,7 +1,15 @@
 <?php
+/**
+ * Sixreps - Official Sixreps PHP SDK
+ *
+ * @author Sixreps
+ */
 
 /**
  * Sixreps_Api_Base
+ *
+ * @package Sixreps
+ * @subpackage Sixreps.Api
  */
 abstract class Sixreps_Api_Base {
 
