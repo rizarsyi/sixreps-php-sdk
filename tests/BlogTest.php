@@ -10,7 +10,7 @@ class BlogTest extends PHPUnit_Framework_TestCase {
 		                   ->getMock();
 	}
 
-	public function testGetAlbum() {
+	public function testGetBlog() {
 		$result = new StdClass;
     	$result->title = 'Mock Blog';
     	$result->owner = new stdClass;
