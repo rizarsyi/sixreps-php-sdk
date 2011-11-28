@@ -6,21 +6,21 @@
 class Sixreps_Api_Video extends Sixreps_Api_Base {
 
 	public function prefix() {
-		return 'events';
+		return 'videos';
 	}
 
-	public function getVideo($blogId, $attrs = array()) {
-		$url = $this->prefix() . '/' . urlencode($blogId);
+	public function getVideo($id, $attrs = array()) {
+		$url = $this->prefix() . '/' . urlencode($id);
 		return $this->makeRequest($url, $attrs);
 	}
 
-	public function getComments($blogId, $attrs = array()) {
-		$url = $this->prefix() . '/' . urlencode($blogId) . '/comments';
+	public function getComments($id, $attrs = array()) {
+		$url = $this->prefix() . '/' . urlencode($id) . '/comments';
 		return $this->makeRequest($url, $attrs);
 	}
 
-	public function getLikes($blogId, $attrs = array()) {
-		$url = $this->prefix() . '/' . urlencode($blogId) . '/likes';
+	public function getLikes($id, $attrs = array()) {
+		$url = $this->prefix() . '/' . urlencode($id) . '/likes';
 		return $this->makeRequest($url, $attrs);
 	}
 

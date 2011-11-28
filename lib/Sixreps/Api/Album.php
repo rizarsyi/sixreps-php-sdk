@@ -9,18 +9,18 @@ class Sixreps_Api_Album extends Sixreps_Api_Base {
 		return 'albums';
 	}
 
-	public function getAlbum($albumId, $attrs = array()) {
-		$url = $this->prefix() . '/' . urlencode($albumId);
+	public function getAlbum($id, $attrs = array()) {
+		$url = $this->prefix() . '/' . urlencode($id);
 		return $this->makeRequest($url, $attrs);
 	}
 
-	public function getComments($albumId, $attrs = array()) {
-		$url = $this->prefix() . '/' . urlencode($albumId) . '/comments';
+	public function getComments($id, $attrs = array()) {
+		$url = $this->prefix() . '/' . urlencode($id) . '/comments';
 		return $this->makeRequest($url, $attrs);
 	}
 
-	public function getLikes($albumId, $attrs = array()) {
-		$url = $this->prefix() . '/' . urlencode($albumId) . '/likes';
+	public function getLikes($id, $attrs = array()) {
+		$url = $this->prefix() . '/' . urlencode($id) . '/likes';
 		return $this->makeRequest($url, $attrs);
 	}
 
