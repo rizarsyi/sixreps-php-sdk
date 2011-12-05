@@ -32,7 +32,7 @@ spl_autoload_register(array('Sixreps_Client', 'autoload'));
  */
 class Sixreps_Client {
 
-	protected $clientId = null;
+	protected $appId = null;
 
 	/**
 	 * Redirect URI when after client app has been authorized or retrieving access token.
@@ -79,11 +79,13 @@ class Sixreps_Client {
 	/**
 	 * Initializes client app
 	 *
-	 * @param int $clientId Client app ID
+	 * @param int $appId Client app ID
+	 * @param int $appSecret Client app secret key
 	 * @return void
 	 */
-	public function __construct($clientId) {
-		$this->clientId = $clientId;
+	public function __construct($appId, $appSecret) {
+		$this->appId     = $appId;
+		$this->appSecret = $appSecret;
 	}
 
 	/**
@@ -159,14 +161,27 @@ class Sixreps_Client {
 	/**
 	 * Set and/or get client ID.
 	 *
-	 * @param int|null $clientId Client app ID
+	 * @param int|null $appId Client app ID
 	 * @return int|null Client app ID
 	 */
-	public function clientId($clientId = null) {
-		if ($clientId) {
-			$this->clientId = $clientId;
+	public function appId($appId = null) {
+		if ($appId) {
+			$this->appId = $appId;
 		}
-		return $this->clientId;
+		return $this->appId;
+	}
+
+	/**
+	 * Set and/or get app secret key.
+	 *
+	 * @param string|null $appSecret Client app secret key
+	 * @return string|null Client app secret key
+	 */
+	public function appSecret($appSecret = null) {
+		if ($appSecret) {
+			$this->appSecret = $appSecret;
+		}
+		return $this->appSecret;
 	}
 
 	/**

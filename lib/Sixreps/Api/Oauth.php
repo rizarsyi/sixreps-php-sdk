@@ -32,7 +32,7 @@ class Sixreps_Api_Oauth extends Sixreps_Api_Base {
 	public function authorize() {
 		$url = $this->prefix() . '/authorize';
 		$attrs = array(
-			'client_id'    => $this->client->clientId(),
+			'app_id'       => $this->client->appId(),
 			'redirect_uri' => $this->client->redirectUri()
 		);
 		return $this->makeRequest($url, $attrs, false, false);
@@ -48,8 +48,9 @@ class Sixreps_Api_Oauth extends Sixreps_Api_Base {
 		$url = $this->prefix() . '/access_token';
 		$attrs = array(
 			'code'         => $code,
-			'client_id'    => $this->client->clientId(),
-			'redirect_uri' => $this->client->redirectUri()
+			'app_id'       => $this->client->appId(),
+			'redirect_uri' => $this->client->redirectUri(),
+			'app_secret'   => $this->client->appSecret()
 		);
 		return $this->makeRequest($url, $attrs, false, false);
 	}
