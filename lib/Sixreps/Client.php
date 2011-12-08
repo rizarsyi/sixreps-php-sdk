@@ -46,7 +46,7 @@ class Sixreps_Client {
 	 *
 	 * @var string
 	 */
-	protected $host = 'http://api.sixreps.dev/';
+	protected $host = 'http://api-dev.sixreps.com/';
 
 	/**
 	 * UserAgent name
