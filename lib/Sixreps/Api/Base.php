@@ -34,7 +34,7 @@ abstract class Sixreps_Api_Base {
      * @return stdClass JSON-decoded string as an object
      */
     protected function makeRequest($url, $attrs = array(), $withToken = true, $decrypt = true, $method = 'GET') {
-        $url = $this->client->host() . $url;
+        $url = $this->client->apiHost() . $url;
 
         if ($withToken === true) {
             $attrs = array_merge(

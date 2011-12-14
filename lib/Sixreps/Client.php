@@ -46,7 +46,7 @@ class Sixreps_Client {
      *
      * @var string
      */
-    protected $host = 'http://api-dev.sixreps.com/';
+    protected $apiHost = 'http://api.sixreps.com/';
 
     /**
      * UserAgent name
@@ -100,10 +100,13 @@ class Sixreps_Client {
     /**
      * Get host name that serves API resources.
      *
-     * @return string Connection timeout length in seconds
+     * @return string Host name that serves API resources.
      */
-    public function host() {
-        return $this->host;
+    public function apiHost($host = null) {
+        if ($host) {
+            $this->apiHost = $host;
+        }
+        return $this->apiHost;
     }
 
     /**
