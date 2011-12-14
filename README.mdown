@@ -2,11 +2,10 @@
 
 The official PHP SDK for Sixreps public API.
 
-## TODO
+## Todo
 
-1. Testcase
-2. Example
+* Example
 
-# Copyright
+## Copyright
 
 SixReps 2011
