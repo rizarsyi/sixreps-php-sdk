@@ -23,11 +23,11 @@ if (!function_exists('json_decode')) {
 class Sixreps {
 
     /**
-     * Paht to API resource server.
+     * Path to API resource server.
      *
      * @var array
      */
-    protected $_host = 'http://api.sixreps.dev/';
+    protected $_host = 'https://api.sixreps.com/';
 
     /**
      * User Agent name.
@@ -48,8 +48,11 @@ class Sixreps {
      *
      * @param string $app_secret Application secret obtained when creating app
      */
-    public function __construct($app_secret) {
+    public function __construct($app_secret, $host = null) {
         $this->app_secret = $app_secret;
+        if (!empty($host)) {
+            $this->_host = $host;
+        }
     }
 
     /**
