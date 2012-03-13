@@ -1,11 +1,7 @@
-# Sixreps PHP SDK
+# SixReps PHP SDK
 
-The official PHP SDK for Sixreps public API.
-
-## Todo
-
-* Example
+The official PHP SDK for SixReps public API.
 
 ## Copyright
 
-SixReps 2011
+SixReps 2012
