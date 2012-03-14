@@ -65,7 +65,7 @@ class Sixreps {
      * @see Sixreps::_request
      */
     public function get($uri, $args = array()) {
-        return $this->_request($uri, $args);
+        return $this->_request($uri, $args, 'GET');
     }
 
     /**
@@ -142,7 +142,10 @@ class Sixreps {
                     $url = $url . '?' . http_build_query($args);
                     break;
                 default:
-                    throw new InvalidArgumentException(sprintf('Unsupported %s HTTP method. It should match one of %s keywords.', $method, implode(', ', $this->_http_methods)));
+                    throw new InvalidArgumentException(sprintf(
+                        'Unsupported %s HTTP method. It should match one of %s keywords.',
+                        $method, implode(', ', $this->_http_methods)
+                    ));
             }
 
         }
