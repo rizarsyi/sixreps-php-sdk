@@ -45,7 +45,7 @@ class Sixreps {
      *
      * @param   string  $uri    Path to API resource
      * @param   array   $args   Associative array of passed arguments
-     * @return  array           Associative array of processed response
+     * @return  array           Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
@@ -58,7 +58,7 @@ class Sixreps {
      *
      * @param   string  $uri    Path to API resource
      * @param   array   $args   Associative array of passed arguments
-     * @return  array           Associative array of processed response
+     * @return  array           Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
@@ -71,7 +71,7 @@ class Sixreps {
      *
      * @param   string  $uri    Path to API resource
      * @param   array   $args   Associative array of passed arguments
-     * @return  array           Associative array of processed response
+     * @return  array           Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
@@ -84,7 +84,7 @@ class Sixreps {
      *
      * @param   string  $uri    Path to API resource
      * @param   array   $args   Associative array of passed arguments
-     * @return  array           Associative array of processed response
+     * @return  array           Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
@@ -98,7 +98,7 @@ class Sixreps {
      * @param   string  $uri    Path to API resource
      * @param   array   $args   Associative array of passed arguments
      * @param   string  $method HTTP method
-     * @return  array           Associative array of processed response
+     * @return  array           Processed response
      * @see     Sixreps::_response
      */
     protected function _request($uri, $args = array(), $method = 'GET') {
@@ -150,12 +150,12 @@ class Sixreps {
      *
      * @param   string  $body       Body of response returned from API request
      * @param   array   $headers    Headers of response returned from API request
-     * @return  array               Associative array of processed response
+     * @return  array               Processed response
      */
     protected function _response($body, $headers) {
         return array(
-            'body'    => json_decode($body),
-            'headers' => array(
+            json_decode($body),
+            array(
                 'content_type' => $headers['content_type'],
                 'http_code'    => $headers['http_code']
             )
