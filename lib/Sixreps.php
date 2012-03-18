@@ -125,29 +125,35 @@ class Sixreps {
             CURLOPT_TIMEOUT        => 60,
         );
 
-        if (!empty($args)) {
-            switch ($method) {
-                case 'GET':
+        switch ($method) {
+            case 'GET':
+                if (!empty($args)) {
                     $url = $url . '?' . http_build_query($args);
-                    break;
-                case 'POST':
-                    $curl_options[CURLOPT_POST]       = true;
+                }
+                break;
+            case 'POST':
+                $curl_options[CURLOPT_POST] = true;
+                if (!empty($args)) {
                     $curl_options[CURLOPT_POSTFIELDS] = $args;
-                    break;
-                case 'PUT':
-                    $curl_options[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                    $curl_options[CURLOPT_POSTFIELDS]    = $args;
-                    break;
-                case 'DELETE':
-                    $curl_options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+                }
+                break;
+            case 'PUT':
+                $curl_options[CURLOPT_CUSTOMREQUEST] = 'PUT';
+                if (!empty($args)) {
+                    $curl_options[CURLOPT_POSTFIELDS] = $args;
+                }
+                break;
+            case 'DELETE':
+                $curl_options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+                if (!empty($args)) {
                     $url = $url . '?' . http_build_query($args);
-                    break;
-                default:
-                    throw new InvalidArgumentException(sprintf(
-                        'Unsupported %s HTTP method. It should match one of %s keywords.',
-                        $method, implode(', ', $this->_http_methods)
-                    ));
-            }
+                }
+                break;
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Unsupported %s HTTP method. It should match one of %s keywords.',
+                    $method, implode(', ', $this->_http_methods)
+                ));
         }
 
         if (!empty($headers)) {
