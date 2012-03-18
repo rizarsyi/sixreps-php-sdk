@@ -1,12 +1,29 @@
 <?php
 /**
- * Sixreps - Official Sixreps PHP SDK
+ * Sixreps - Official SixReps PHP SDK
  *
  * @author Sixreps
  */
 
 /**
  * Sixreps
+ *
+ * This class acts as a client for SixReps API that provides a DSL to make
+ * GET, POST, PUT, and DELETE requests.
+ *
+ * Example:
+ *
+ *     $sixreps = new Sixreps('YOUR_APP_SECRET');
+ *
+ *     // Use access token as an $args argument
+ *     $sixreps->get('/users', array(
+ *         'access_token' => 'YOUR_ACCESS_TOKEN',
+ *     ));
+ *
+ *     // Use access token as an $headers argument
+ *     $sixreps->get('/users', array(), array(
+ *         'Authorization: token YOUR_ACCESS_TOKEN'
+ *     ));
  *
  * @package Sixreps
  */
@@ -16,11 +33,6 @@ class Sixreps {
      * @var string Path to API resource server
      */
     protected $_host = 'https://api.sixreps.com/';
-
-    /**
-     * @var string User Agent name
-     */
-    protected $_user_agent = 'sixreps-php-0.1';
 
     /**
      * @var array A list of supported HTTP methods
@@ -43,70 +55,77 @@ class Sixreps {
     /**
      * DSL wrapper to make a GET request.
      *
-     * @param   string  $uri    Path to API resource
-     * @param   array   $args   Associative array of passed arguments
-     * @return  array           Processed response
+     * @param   string  $uri        Path to API resource
+     * @param   array   $args       Associative array of passed arguments
+     * @param   array   $headers    List of passed headers
+     * @return  array               Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
-    public function get($uri, $args = array()) {
-        return $this->_request($uri, $args, 'GET');
+    public function get($uri, $args = array(), $headers = array()) {
+        return $this->_request($uri, $args, $headers, 'GET');
     }
 
     /**
      * DSL wrapper to make a POST request.
      *
-     * @param   string  $uri    Path to API resource
-     * @param   array   $args   Associative array of passed arguments
-     * @return  array           Processed response
+     * @param   string  $uri        Path to API resource
+     * @param   array   $args       Associative array of passed arguments
+     * @param   array   $headers    List of passed headers
+     * @return  array               Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
-    public function post($uri, $args = array()) {
-        return $this->_request($uri, $args, 'POST');
+    public function post($uri, $args = array(), $headers = array()) {
+        return $this->_request($uri, $args, $headers, 'POST');
     }
 
     /**
      * DSL wrapper to make a PUT request.
      *
-     * @param   string  $uri    Path to API resource
-     * @param   array   $args   Associative array of passed arguments
-     * @return  array           Processed response
+     * @param   string  $uri        Path to API resource
+     * @param   array   $args       Associative array of passed arguments
+     * @param   array   $headers    List of passed headers
+     * @return  array               Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
-    public function put($uri, $args = array()) {
-        return $this->_request($uri, $args, 'PUT');
+    public function put($uri, $args = array(), $headers = array()) {
+        return $this->_request($uri, $args, $headers, 'PUT');
     }
 
     /**
      * DSL wrapper to make a DELETE request.
      *
-     * @param   string  $uri    Path to API resource
-     * @param   array   $args   Associative array of passed arguments
-     * @return  array           Processed response
+     * @param   string  $uri        Path to API resource
+     * @param   array   $args       Associative array of passed arguments
+     * @param   array   $headers    List of passed headers
+     * @return  array               Processed response
      * @see     Sixreps::_response
      * @see     Sixreps::_request
      */
-    public function delete($uri, $args = array()) {
-        return $this->_request($uri, $args, 'DELETE');
+    public function delete($uri, $args = array(), $headers = array()) {
+        return $this->_request($uri, $args, $headers, 'DELETE');
     }
 
     /**
      * DSL wrapper to make a HTTP request based on supported HTTP methods.
      *
-     * @param   string  $uri    Path to API resource
-     * @param   array   $args   Associative array of passed arguments
-     * @param   string  $method HTTP method
-     * @return  array           Processed response
+     * @param   string  $uri        Path to API resource
+     * @param   array   $args       Associative array of passed arguments
+     * @param   array   $headers    List of passed headers
+     * @param   string  $method     HTTP method
+     * @return  array               Processed response
      * @see     Sixreps::_response
      */
-    protected function _request($uri, $args = array(), $method = 'GET') {
+    protected function _request($uri, $args = array(), $headers = array(), $method = 'GET') {
         $url = $this->_host . trim($uri, '/');
 
         $curl_options = array(
-            CURLOPT_USERAGENT      => $this->_user_agent,
+            CURLOPT_USERAGENT      => 'sixreps-php-0.1',
             CURLOPT_RETURNTRANSFER => true
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT        => 60,
         );
 
         if (!empty($args)) {
@@ -132,32 +151,36 @@ class Sixreps {
                         $method, implode(', ', $this->_http_methods)
                     ));
             }
+        }
 
+        if (!empty($headers)) {
+            $curl_options[CURLOPT_HTTPHEADER] = $headers;
         }
 
         $request = curl_init($url);
         curl_setopt_array($request, $curl_options);
 
-        $body    = curl_exec($request);
-        $headers = curl_getinfo($request);
+        $body = curl_exec($request);
+        $info = curl_getinfo($request);
 
         curl_close($request);
-        return $this->_response($body, $headers);
+        return $this->_response($body, $info);
     }
 
     /**
      * Typically process response returned from API request.
      *
-     * @param   string  $body       Body of response returned from API request
-     * @param   array   $headers    Headers of response returned from API request
-     * @return  array               Processed response
+     * @param   string  $body   Body of response returned from API request
+     * @param   array   $info   Headers of response returned from API request
+     * @return  array           Processed response
      */
-    protected function _response($body, $headers) {
+    protected function _response($body, $info) {
         return array(
             json_decode($body),
             array(
-                'content_type' => $headers['content_type'],
-                'http_code'    => $headers['http_code']
+                'content_type' => $info['content_type'],
+                'http_code'    => $info['http_code'],
+                'url'          => $info['url']
             )
         );
     }
