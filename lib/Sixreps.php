@@ -13,7 +13,7 @@
  *
  * Example:
  *
- *     $sixreps = new Sixreps('YOUR_APP_SECRET');
+ *     $sixreps = new Sixreps();
  *
  *     // Use access token as an $args argument
  *     $sixreps->get('/users', array(
@@ -41,12 +41,9 @@ class Sixreps {
 
     /**
      * Create a new instance of Sixreps.
-     *
-     * @param   string  $app_secret Application secret obtained when creating app
      * @return  void
      */
-    public function __construct($app_secret, $host = null) {
-        $this->app_secret = $app_secret;
+    public function __construct($host = null) {
         if (!empty($host)) {
             $this->_host = $host;
         }
@@ -123,7 +120,7 @@ class Sixreps {
 
         $curl_options = array(
             CURLOPT_USERAGENT      => 'sixreps-php-0.1',
-            CURLOPT_RETURNTRANSFER => true
+            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT        => 60,
         );
