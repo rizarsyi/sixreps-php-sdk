@@ -4,4 +4,4 @@ The official PHP SDK for SixReps public API.
 
 ## Copyright
 
-SixReps 2012
+2011-2012 SixReps. All code released under Apache License Version 2. See `LICENSE.txt` for details.
