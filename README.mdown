@@ -2,6 +2,45 @@
 
 The official PHP SDK for SixReps public API.
 
+## Example
+
+```php
+<?php
+require 'lib/Sixreps.php';
+
+$sixreps = new Sixreps();
+
+// Assuming that you already have access token
+$access_token = 'YOUR_ACCESS_TOKEN';
+
+// Every request to SixReps API always returns 2-elements array 
+// (except errors occur in resource server).
+//
+// The first element is an object of body response,
+// and the second one is an array of HTTP info.
+
+// Example of GET request
+list($body, $info) = $sixreps->get('/activities', array(
+    'access_token' => $access_token
+));
+
+// Example of POST request
+list($body, $info) = $sixreps->post('/activities', array(
+    'access_token' => $access_token,
+    'body'         => 'my first status update'
+));
+
+// Example of PUT request
+list($body, $info) = $sixreps->put('/activities', array(
+    'access_token' => $access_token
+));
+
+// Example of DELETE request
+list($body, $info) = $sixreps->delete('/activities/123456', array(
+    'access_token' => $access_token
+));
+```
+
 ## Copyright
 
 2011-2012 SixReps. All code released under Apache License Version 2. See `LICENSE.txt` for details.
