@@ -2,6 +2,12 @@
 
 The official PHP SDK for SixReps public API.
 
+## Requirements
+
+* PHP5
+* PHP-JSON extension (PHP5 < 5.2)
+* PHP-cURL extension
+
 ## Example
 
 ```php
