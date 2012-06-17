@@ -167,7 +167,7 @@ class Sixreps {
         $info = curl_getinfo($request);
 
         curl_close($request);
-        return $this->_response($body, $info);
+        return $this->_response($body, $info, $method);
     }
 
     /**
@@ -177,13 +177,14 @@ class Sixreps {
      * @param   array   $info   Headers of response returned from API request
      * @return  array           Processed response
      */
-    protected function _response($body, $info) {
+    protected function _response($body, $info, $method) {
         return array(
             json_decode($body),
             array(
                 'content_type' => $info['content_type'],
                 'http_code'    => $info['http_code'],
-                'url'          => $info['url']
+                'url'          => $info['url'],
+                'method'       => $method
             )
         );
     }
