@@ -59,6 +59,15 @@ class Sixreps {
     }
 
     /**
+     * Tell CURL to verify cert using bundle certificate or not.
+     *
+     * @param   bool  $verify_bundle
+     */
+    public function verifyLocalCert($verify_bundle = false) {
+        return $this->_verify_bundle = $verify_bundle;
+    }
+
+    /**
      * DSL wrapper to make a GET request.
      *
      * @param   string  $uri        Path to API resource
