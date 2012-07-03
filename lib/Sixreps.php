@@ -160,18 +160,14 @@ class Sixreps {
             $curl_options[CURLOPT_HTTPHEADER] = $headers;
         }
 
+        $curl_options[CURLOPT_CAINFO] = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacert.pem';
+
         $request = curl_init($url);
         curl_setopt_array($request, $curl_options);
 
         $body = curl_exec($request);
         $info = curl_getinfo($request);
-
-        if (curl_errno($request) == 60) { // CURLE_SSL_CACERT
-            curl_setopt($request, CURLOPT_CAINFO, dirname(__FILE__) . '/sixreps_ca_chain_bundle.crt');
-            $body = curl_exec($request);
-            $info = curl_getinfo($request);
-        }        
-
+        
         curl_close($request);
         return $this->_response($body, $info, $method);
     }
