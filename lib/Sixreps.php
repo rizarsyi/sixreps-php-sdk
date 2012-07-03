@@ -35,6 +35,12 @@ class Sixreps {
     protected $_host = 'https://api.sixreps.com/';
 
     /**
+     * @var bool Verify SSL using bundle certificate from SDK
+     */
+    protected $_verify_bundle = false;
+    protected $_cacert_path;
+
+    /**
      * @var array A list of supported HTTP methods
      */
     protected $_http_methods = array('GET', 'POST', 'PUT', 'DELETE');
@@ -43,10 +49,22 @@ class Sixreps {
      * Create a new instance of Sixreps.
      * @return  void
      */
-    public function __construct($host = null) {
+    public function __construct($host = null, $verify_bundle = false) {
         if (!empty($host)) {
             $this->_host = $host;
         }
+
+        $this->_verify_bundle = $verify_bundle;
+        $this->_cacert_path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacert.pem';
+    }
+
+    /**
+     * Tell CURL to verify cert using bundle certificate or not.
+     *
+     * @param   bool  $verify_bundle
+     */
+    public function verifyLocalCert($verify_bundle = false) {
+        return $this->_verify_bundle = $verify_bundle;
     }
 
     /**
@@ -160,6 +178,10 @@ class Sixreps {
             $curl_options[CURLOPT_HTTPHEADER] = $headers;
         }
 
+        if ($this->_verify_bundle == true) {
+            $curl_options[CURLOPT_CAINFO] = $this->_cacert_path;
+        }
+
         $request = curl_init($url);
         curl_setopt_array($request, $curl_options);
 
@@ -167,10 +189,10 @@ class Sixreps {
         $info = curl_getinfo($request);
 
         if (curl_errno($request) == 60) { // CURLE_SSL_CACERT
-            curl_setopt($request, CURLOPT_CAINFO, dirname(__FILE__) . '/sixreps_ca_chain_bundle.crt');
+            curl_setopt($request, CURLOPT_CAINFO, $this->_cacert_path);
             $body = curl_exec($request);
             $info = curl_getinfo($request);
-        }        
+        }
 
         curl_close($request);
         return $this->_response($body, $info, $method);
