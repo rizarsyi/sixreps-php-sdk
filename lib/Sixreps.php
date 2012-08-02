@@ -152,13 +152,13 @@ class Sixreps {
             case 'POST':
                 $curl_options[CURLOPT_POST] = true;
                 if (!empty($args)) {
-                    $curl_options[CURLOPT_POSTFIELDS] = $args;
+                    $curl_options[CURLOPT_POSTFIELDS] = http_build_query($args);
                 }
                 break;
             case 'PUT':
                 $curl_options[CURLOPT_CUSTOMREQUEST] = 'PUT';
                 if (!empty($args)) {
-                    $curl_options[CURLOPT_POSTFIELDS] = $args;
+                    $curl_options[CURLOPT_POSTFIELDS] = http_build_query($args);
                 }
                 break;
             case 'DELETE':
