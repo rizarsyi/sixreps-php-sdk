@@ -152,13 +152,13 @@ class Sixreps {
             case 'POST':
                 $curl_options[CURLOPT_POST] = true;
                 if (!empty($args)) {
-                    $curl_options[CURLOPT_POSTFIELDS] = http_build_query($args);
+                    $curl_options[CURLOPT_POSTFIELDS] = $this->build_field_request($args);
                 }
                 break;
             case 'PUT':
                 $curl_options[CURLOPT_CUSTOMREQUEST] = 'PUT';
                 if (!empty($args)) {
-                    $curl_options[CURLOPT_POSTFIELDS] = http_build_query($args);
+                    $curl_options[CURLOPT_POSTFIELDS] = $this->build_field_request($args);
                 }
                 break;
             case 'DELETE':
@@ -227,6 +227,35 @@ class Sixreps {
         die($e);
     }
 
+    /**
+     * Process post fields array to string
+     *
+     * @param   Exception   $e  Exception or its subclasses
+     * @return  string like http_query_build
+     */
+    protected static function build_field_request($args) {
+        $return = array();
+
+        if (is_array($args) && !empty($args)) {
+
+            # Process for level 1
+            foreach ($args as $key => $value) {
+                if (is_array($value) && !empty($value)) {
+
+                    # Process for level 2 if is array
+                    foreach ($value as $subkey => $subvalue) {
+                        $return[] = $key . '=' . $subvalue;
+                    }
+                } else {
+                    $return[] = $key . '=' . $value;
+                }
+            }
+
+            $return = implode('&amp;', $return);
+        }
+
+        return $return;
+    }
 }
 
 // Throws exception if CURL extension is not loaded.
