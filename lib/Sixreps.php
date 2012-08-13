@@ -235,17 +235,21 @@ class Sixreps {
      */
     protected static function build_field_request($args) {
         $return = array();
+        $multidimensional = false;
 
         if (is_array($args) && !empty($args)) {
 
             # Process for level 1
             foreach ($args as $key => $value) {
                 if (is_array($value) && !empty($value)) {
+                    # Tell script that this is multidimensional array
+                    $multidimensional = true;
 
                     # Process for level 2 if is array
                     foreach ($value as $subkey => $subvalue) {
                         $return[] = $key . '=' . $subvalue;
                     }
+
                 } else {
                     $return[] = $key . '=' . $value;
                 }
@@ -254,7 +258,11 @@ class Sixreps {
             $return = implode('&amp;', $return);
         }
 
-        return $return;
+        if ($multidimensional == true) {
+            return $return;
+        } else {
+            return $args;
+        }
     }
 }
 
