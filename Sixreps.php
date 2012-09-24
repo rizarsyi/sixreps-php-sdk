@@ -9,7 +9,8 @@
  * Sixreps
  *
  * This class acts as a client for SixReps API that provides a DSL to make
- * GET, POST, PUT, and DELETE requests.
+ * GET, POST, PUT, and DELETE requests. All request using Requests library
+ * from https://github.com/rmccue/Requests
  *
  * Example:
  *
@@ -35,12 +36,6 @@ class Sixreps {
     protected $_host = 'https://api.sixreps.com/';
 
     /**
-     * @var bool Verify SSL using bundle certificate from SDK
-     */
-    protected $_verify_bundle = false;
-    protected $_cacert_path;
-
-    /**
      * @var array A list of supported HTTP methods
      */
     protected $_http_methods = array('GET', 'POST', 'PUT', 'DELETE');
@@ -49,22 +44,14 @@ class Sixreps {
      * Create a new instance of Sixreps.
      * @return  void
      */
-    public function __construct($host = null, $verify_bundle = false) {
+    public function __construct($host = null) {
         if (!empty($host)) {
             $this->_host = $host;
         }
 
-        $this->_verify_bundle = $verify_bundle;
-        $this->_cacert_path = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacert.pem';
-    }
+        include(dirname(__FILE__) . '/lib/Requests.php');
 
-    /**
-     * Tell CURL to verify cert using bundle certificate or not.
-     *
-     * @param   bool  $verify_bundle
-     */
-    public function verifyLocalCert($verify_bundle = false) {
-        return $this->_verify_bundle = $verify_bundle;
+        Requests::register_autoloader();
     }
 
     /**
@@ -136,36 +123,24 @@ class Sixreps {
     protected function _request($uri, $args = array(), $headers = array(), $method = 'GET') {
         $url = $this->_host . trim($uri, '/');
 
-        $curl_options = array(
-            CURLOPT_USERAGENT      => 'sixreps-php-0.1',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT        => 60,
-        );
-
         switch ($method) {
             case 'GET':
                 if (!empty($args)) {
                     $url = $url . '?' . http_build_query($args);
                 }
+                $request = Requests::get($url, array());
                 break;
             case 'POST':
-                $curl_options[CURLOPT_POST] = true;
-                if (!empty($args)) {
-                    $curl_options[CURLOPT_POSTFIELDS] = $this->build_field_request($args);
-                }
+                $request = Requests::post($url, array(), $args);
                 break;
             case 'PUT':
-                $curl_options[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                if (!empty($args)) {
-                    $curl_options[CURLOPT_POSTFIELDS] = $this->build_field_request($args);
-                }
+                $request = Requests::put($url, array(), $args);
                 break;
             case 'DELETE':
-                $curl_options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
                 if (!empty($args)) {
                     $url = $url . '?' . http_build_query($args);
                 }
+                $request = Requests::delete($url, array());
                 break;
             default:
                 throw new InvalidArgumentException(sprintf(
@@ -174,27 +149,14 @@ class Sixreps {
                 ));
         }
 
-        if (!empty($headers)) {
-            $curl_options[CURLOPT_HTTPHEADER] = $headers;
-        }
+        $body = $request->body;
+        $info['headers'] = $request->headers;
+        $info['headers'] = $request->headers;
+        $info['status_code'] = $request->status_code;
+        $info['success'] = $request->success;        
+        $info['redirects'] = $request->redirects;        
+        $info['url'] = $request->url;        
 
-        if ($this->_verify_bundle == true) {
-            $curl_options[CURLOPT_CAINFO] = $this->_cacert_path;
-        }
-
-        $request = curl_init($url);
-        curl_setopt_array($request, $curl_options);
-
-        $body = curl_exec($request);
-        $info = curl_getinfo($request);
-
-        if (curl_errno($request) == 60) { // CURLE_SSL_CACERT
-            curl_setopt($request, CURLOPT_CAINFO, $this->_cacert_path);
-            $body = curl_exec($request);
-            $info = curl_getinfo($request);
-        }
-
-        curl_close($request);
         return $this->_response($body, $info, $method);
     }
 
@@ -208,12 +170,7 @@ class Sixreps {
     protected function _response($body, $info, $method) {
         return array(
             json_decode($body),
-            array(
-                'content_type' => $info['content_type'],
-                'http_code'    => $info['http_code'],
-                'url'          => $info['url'],
-                'method'       => $method
-            )
+            $info
         );
     }
 
@@ -225,44 +182,6 @@ class Sixreps {
      */
     public static function handle_exception(Exception $e) {
         die($e);
-    }
-
-    /**
-     * Process post fields array to string
-     *
-     * @param   Exception   $e  Exception or its subclasses
-     * @return  string like http_query_build
-     */
-    protected static function build_field_request($args) {
-        $return = array();
-        $multidimensional = false;
-
-        if (is_array($args) && !empty($args)) {
-
-            # Process for level 1
-            foreach ($args as $key => $value) {
-                if (is_array($value) && !empty($value)) {
-                    # Tell script that this is multidimensional array
-                    $multidimensional = true;
-
-                    # Process for level 2 if is array
-                    foreach ($value as $subkey => $subvalue) {
-                        $return[] = $key . '=' . $subvalue;
-                    }
-
-                } else {
-                    $return[] = $key . '=' . $value;
-                }
-            }
-
-            $return = implode('&amp;', $return);
-        }
-
-        if ($multidimensional == true) {
-            return $return;
-        } else {
-            return $args;
-        }
     }
 }
 

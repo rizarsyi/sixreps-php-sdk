@@ -8,16 +8,13 @@ The official PHP SDK for SixReps public API.
 * PHP-JSON extension (PHP5 < 5.2)
 * PHP-cURL extension
 
-## Example
+## Basic Example
 
 ```php
 <?php
-require 'lib/Sixreps.php';
+require 'Sixreps.php';
 
 $sixreps = new Sixreps();
-
-// Tell application to verify SSL using bundled certificate (optional).
-$sixreps->verifyLocalCert(false);
 
 // Assuming that you already have access token
 $access_token = 'YOUR_ACCESS_TOKEN';
